@@ -1,0 +1,105 @@
+<html>
+<head><title></title></head>
+<body>
+	<style>
+	</style>
+
+	<h1 > PLEASE SELECT THE IMAGE BY CLICKING ON SELECT BUTTON</h1>
+	<img id ="myimg" label id ="upProgress"></body><br><br>
+	<button id = 'select'>select image</button>
+	<button id = 'upload'>send image</button>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-storage.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAUaNRxzbv_9ds8BtZVu-cg2xUJ0c8VE44",
+    authDomain: "fanpage-467a1.firebaseapp.com",
+    projectId: "fanpage-467a1",
+    storageBucket: "fanpage-467a1.appspot.com",
+    messagingSenderId: "813946490998",
+    appId: "1:813946490998:web:94b7d18d9bc8960d4d4f57",
+    measurementId: "G-ZJML3MKZ0Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  // initialize fire base
+
+
+var currentdate = new Date();
+var datemessage = currentdate.getDate() + "-" + (currentdate.getMonth()+1) 
++ "-" + currentdate.getFullYear() + " @ " 
++ currentdate.getHours() + ":" 
++ currentdate.getMinutes() +":" +currentdate.getSeconds();
+
+var myName =JSON.parse(localStorage.getItem('userid'));
+  var group = JSON.parse(localStorage.getItem('groupid'));
+
+  document.getElementById("select").onclick = function (e){
+       var input = document.createElement('input');
+       input.type = "file";
+         
+          input.onchange = e =>{
+          	files = e.target.files;
+          	reader = new FileReader();
+          	reader.onload = function(){
+          		document.getElementById("myimg").src = reader.result;
+          	}
+          	reader.readAsDataURL(files[0]);
+
+          }
+           input.click();
+       }
+   document.getElementById('upload').onclick = function()
+   {
+   	
+   	var uploadTask = firebase.storage().ref("Images/"+datemessage+".png").put(files[0]);
+   	uploadTask.on("state_changed",function(snapshot){
+           
+           
+       },
+
+       function (error)
+       {
+       	alert("error in saving the image");
+       },
+
+       function()
+       {
+       	uploadTask.snapshot.ref.getDownloadURL().then(function(url){
+       		ImgUrl = url;
+          
+          firebase.database().ref("messages").push().set({
+          "sender" : myName ,
+          "message" : " ",
+          "datemessage" : datemessage,
+          "group": group,
+          "link": ImgUrl
+
+          });
+       	});
+       	alert("uploaded");
+       }
+
+            
+   	);
+    
+      
+   }
+
+</script>
+
+</body>
+</html>

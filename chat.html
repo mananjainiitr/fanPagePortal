@@ -1,0 +1,179 @@
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAUaNRxzbv_9ds8BtZVu-cg2xUJ0c8VE44",
+    authDomain: "fanpage-467a1.firebaseapp.com",
+    projectId: "fanpage-467a1",
+    storageBucket: "fanpage-467a1.appspot.com",
+    messagingSenderId: "813946490998",
+    appId: "1:813946490998:web:94b7d18d9bc8960d4d4f57",
+    measurementId: "G-ZJML3MKZ0Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  // initialize fire base
+ 
+  var myName =JSON.parse(localStorage.getItem('userid'));
+  var group = JSON.parse(localStorage.getItem('groupid'));
+ var link = "none";
+
+ 
+  var currentdate = new Date();
+var datemessage = currentdate.getDate() + "/" + (currentdate.getMonth()+1) 
++ "/" + currentdate.getFullYear() + " @ " 
++ currentdate.getHours() + ":" 
++ currentdate.getMinutes() ;
+console.log(datemessage);
+  
+  function sendMessage(){
+      var message = document.getElementById("message").value;
+
+
+      console.log(message);
+      firebase.database().ref("messages").push().set({
+          "sender" : myName ,
+          "message" : message,
+          "datemessage" : datemessage,
+          "group": group,
+          "link": link
+
+        
+      });
+      document.getElementById("message").value = null;
+      return false ;
+      
+    }
+        firebase.database().ref("messages").on("child_added",function(snapshot){
+            var i = " " ;
+            
+            if(snapshot.val().group == group)
+            { 
+              i +="<li id='message-"+snapshot.key+"'>";
+              if(snapshot.val().sender == myName)
+              {  
+
+                 i+= "<button data-id='"+snapshot.key+"'onClick='deleteMessage(this);'>";
+              i+= "delete" ;
+              i+="</button>";
+              }
+              console.log(snapshot.val().link);
+              if(snapshot.val().link== "none")
+              {
+                 i+= snapshot.val().sender + "<br>"+snapshot.val().message +"<br>"+snapshot.val().datemessage +"<br>";
+              }
+              else{
+
+               i+= snapshot.val().sender + "<br>"+snapshot.val().message +"<br>"+snapshot.val().datemessage +"<br>";
+               i+= "<img id ='img' style =' width:200px; height:300px ; object-fit: contain ; 'src = '"+snapshot.val().link+"' alt = '  '><br>";
+             }
+              }
+            i += "</li><br>" ;
+            document.getElementById("messages").innerHTML += i ;
+             
+           if(snapshot.val().sender == myName && snapshot.val().group == group)
+                { 
+                     var i = document.getElementById("message-"+snapshot.key);
+                     i.style.marginLeft="900px";
+
+
+                 }
+              
+            
+           
+
+          }); 
+        function deleteMessage(self){
+          var messageId = self.getAttribute("data-id");
+          firebase.database().ref("messages").child(messageId).remove();
+        }
+        firebase.database().ref("messages").on("child_removed",function(snapshot)
+        {
+          document.getElementById("message-"+snapshot.key).innerHTML = "";
+        });
+
+        function view()
+        {
+          document.location.href= 'members.html';
+        }
+        function image()
+        {
+          document.location.href='image.html';
+        }
+</script>
+<style>
+  li{
+      border:0.83px solid black;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left:10px;
+      background-color: #ECE5DD;
+      
+      max-width: 300px
+
+      
+      
+
+    }
+    ul{
+      list-style-type:none ;
+    
+      
+     
+      
+      overflow:scroll;
+      height : 580px;}
+
+     #bd
+    {
+      background-image:url('https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Background.max-2800x2800.jpg');
+      background-size: 100%;
+    }
+    #message
+    {
+      width:800px;
+      height:80px;
+      text-align: center;
+    }
+    #mess
+    {
+           width : 80px;
+           height : 60px;
+           margin-bottom:  :50px;
+           margin-left:1200px;
+    }
+    #id01
+    {
+           width:500px;
+    }
+
+
+  </style>
+
+
+  <h1 id="id01" >WELCOME TO CHAT ROOM</h1>
+  <button id = "mess" onclick="view()" >view users</button>
+  <button id = "image" onclick="image()">share image</button>
+   <body id = "bd"> 
+   
+
+
+    <ul id = "messages"></ul></body>
+<form  id = "myform" onsubmit ="return sendMessage();" >
+         <input type ="text" id ="message" placeholder ="ENTER MESSAGE........" autocomplete="off">
+   
+    <input type="submit"> </form>
+    
+   
+   
+  

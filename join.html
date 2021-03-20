@@ -1,0 +1,112 @@
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAUaNRxzbv_9ds8BtZVu-cg2xUJ0c8VE44",
+    authDomain: "fanpage-467a1.firebaseapp.com",
+    projectId: "fanpage-467a1",
+    storageBucket: "fanpage-467a1.appspot.com",
+    messagingSenderId: "813946490998",
+    appId: "1:813946490998:web:94b7d18d9bc8960d4d4f57",
+    measurementId: "G-ZJML3MKZ0Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  // initialize fire base
+
+    var myName =JSON.parse(localStorage.getItem('userid'));
+    
+ 
+
+
+ 
+        firebase.database().ref("group").on("child_added",function(snapshot){
+            var i = " " ;
+            
+           
+          
+              i +="<li id='message-"+snapshot.key+"'>";
+              
+                 i+= "<button style = background-color:#6a5acd;  data-id='"+snapshot.val().groups+"'onClick='joinGroup(this); '>";
+              i+= "follow" ;
+              i+="</button>";
+              
+               i+="<button id = 'but' style = margin-left:20px;>👥</button> "
+               i+=  snapshot.val().groups + "<br>";
+             
+            i += "</li>" ;
+            document.getElementById("messages").innerHTML += i ;
+              console.log(snapshot.val().groups);
+              console.log(myName);
+              
+            
+             }); 
+        function joinGroup(self){
+          var messageId = self.getAttribute("data-id");
+          firebase.database().ref("user/"+myName+"/group").push().set({
+            
+            "groups" : messageId
+             });
+          firebase.database().ref("groupdata/"+messageId).push().set({
+            "id":myName
+
+          })
+
+          alert("you have followed "+messageId);
+       
+      };
+
+</script>
+<style>
+  ul li{
+      border:0.83px solid black;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left:10px;
+      background-color: #ECE5DD;
+      height:35px;
+      font-family: "Lucida Console", "Courier New", monospace;
+      font-weight: bold;
+      font-size: 30px;
+    }
+    ul{
+      list-style-type:none ;
+    
+      
+     
+      width :600px;
+      overflow:scroll;
+      height : 700px;
+
+
+    }
+    #head
+    {
+      background-color: #20B2AA;
+       opacity : 100%;
+      padding-bottom:30px;
+
+    }
+        #bd
+    {
+     background-image:url("https://sharegate.com/app/uploads/2019/11/howdoyouadoptteamssharepoint-thumbnail-2x-920x517.png");
+      background-size: 100%;
+    }
+
+
+  </style>
+<form >
+    </form>
+    <body id = "bd">
+    <h1 id = "head">HERE ARE SOME CHAT ROOMS YOU CAN FOLLOW</h1>
+    <ul id = "messages"></ul>
+  </body>

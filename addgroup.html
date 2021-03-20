@@ -1,0 +1,116 @@
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAUaNRxzbv_9ds8BtZVu-cg2xUJ0c8VE44",
+    authDomain: "fanpage-467a1.firebaseapp.com",
+    projectId: "fanpage-467a1",
+    storageBucket: "fanpage-467a1.appspot.com",
+    messagingSenderId: "813946490998",
+    appId: "1:813946490998:web:94b7d18d9bc8960d4d4f57",
+    measurementId: "G-ZJML3MKZ0Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  // initialize fire base
+
+  
+    var user ; var group_name,number,about ;
+  
+  function regester(){
+      
+      
+     group_name = document.getElementById("group_name").value;
+      about = document.getElementById("description").value;
+      number = JSON.parse(localStorage.getItem('userid'));
+
+
+}
+ 
+            function add()
+            {
+            regester();
+              firebase.database().ref("user/"+number+"/group").push().set({
+            
+            "groups" : group_name
+             });
+                firebase.database().ref("group").push().set({
+            
+            "groups" : group_name
+             });
+              
+
+
+              firebase.database().ref("groupdata/"+group_name).push().set({
+                "id": number
+
+
+              });
+              alert("your group is created sucessfully");
+
+            }
+
+
+
+       
+</script>
+<style>
+  #bd
+  {
+     background-image:  url('https://wallpaperaccess.com/full/1900851.png');
+    background-size: 100%;
+  }
+  #divv
+  {
+     
+          margin-left: 450px;
+   
+    width : 500px;
+  }
+  #regester
+  {
+         width : 100px;
+    background-color: lightblue;
+     margin-left: 180px;
+  }
+  #group_name
+  {
+      margin-left: 100px;
+       width : 300px;
+       height:50px;
+  }
+  #description
+  {
+         margin-left: 100px;
+          width : 300px;
+          height:50px;
+  }
+  #number
+  {
+         margin-left: 100px;
+          width : 300px;
+          height:50px;
+  }
+
+
+  </style>
+    <h1 id = "wel" style = "margin-left:500px;margin-top:300px">MAKE A NEW CHAT ROOM HERE</h1>  
+<body id = "bd">
+  <div id = "divv">
+<input id = group_name placeholder = " enter name " required><br>
+<input id = description placeholder = " about group " required><br>
+<input id = number  placeholder = " whose fan are you " required><br>
+<button id = "regester" onClick= "add()" > CREATE </button>
+</div>
+
+</body>

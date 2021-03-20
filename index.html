@@ -1,0 +1,110 @@
+<html>
+				<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+
+				<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+
+				<!-- TODO: Add SDKs for Firebase products that you want to use
+				     https://firebase.google.com/docs/web/setup#available-libraries -->
+				<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
+				<script>
+				  // Your web app's Firebase configuration
+				  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+				  var firebaseConfig = {
+				    apiKey: "AIzaSyAUaNRxzbv_9ds8BtZVu-cg2xUJ0c8VE44",
+				    authDomain: "fanpage-467a1.firebaseapp.com",
+				    projectId: "fanpage-467a1",
+				    storageBucket: "fanpage-467a1.appspot.com",
+				    messagingSenderId: "813946490998",
+				    appId: "1:813946490998:web:94b7d18d9bc8960d4d4f57",
+				    measurementId: "G-ZJML3MKZ0Q"
+				  };
+				  // Initialize Firebase
+				  firebase.initializeApp(firebaseConfig);
+				  firebase.analytics();
+				  // initialize fire base
+
+				  var log ;var f  ;
+				  function login()
+				  {
+				  	log = document.getElementById("userid").value;
+				  	 f = 0;
+				    
+				     firebase.database().ref("user").on("child_added",function(snapshot){
+				     	if (log == snapshot.val().number)
+				      {
+				      	localStorage.setItem('userid', JSON.stringify(log));
+					 	document.location.href = "welcome.html";
+					 	f = 0;
+				      }
+				      console.log(f);
+
+
+					 })
+                      
+
+
+				 };
+
+
+				     
+
+
+
+	 </script>
+	 <style>
+      #userid
+      {
+           background-color: lightyellow;
+      color: black;
+     padding: 10px;
+  text-align: center;
+  width:500px;
+      }
+      #login
+      {
+           background-color: lightblue;
+    color : black;
+    padding:5px;
+    text-align: center;
+
+  width:150px;
+  height:60px;
+margin-left: 190px;
+margin-top: 13px;
+      }
+      #content
+      {
+          margin-left: 450px;
+    
+      }
+      #body
+      {
+      	background-image:url("https://wallpaperaccess.com/full/1900851.png");
+    background-size: 100%;
+      }
+      #click
+      {
+      	width : 500px;
+ 
+      }
+      #log
+      {
+      	 margin-left: 220px;
+    margin-top: 13px;
+      }
+
+	 </style>
+				<h1 id = "wel" style = "margin-left:500px;margin-top:300px">WELCOME TO FAN PORTAL</h1>  
+<body id = "body">
+	 <div id = "content">
+	<input id = userid placeholder = "ENTER USER ID" required><br>
+	<div id= "click">
+
+	<button id = login onclick = "login()" > login</button><br>
+	<a id = "log" href="user.html">want to regester</a>
+     </div>
+ </div>
+	
+</body>
+</html>

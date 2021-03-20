@@ -1,0 +1,137 @@
+<html>
+				<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+
+				<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+
+				<!-- TODO: Add SDKs for Firebase products that you want to use
+				     https://firebase.google.com/docs/web/setup#available-libraries -->
+				<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
+				<script>
+				  // Your web app's Firebase configuration
+				  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+				  var firebaseConfig = {
+				    apiKey: "AIzaSyAUaNRxzbv_9ds8BtZVu-cg2xUJ0c8VE44",
+				    authDomain: "fanpage-467a1.firebaseapp.com",
+				    projectId: "fanpage-467a1",
+				    storageBucket: "fanpage-467a1.appspot.com",
+				    messagingSenderId: "813946490998",
+				    appId: "1:813946490998:web:94b7d18d9bc8960d4d4f57",
+				    measurementId: "G-ZJML3MKZ0Q"
+				  };
+				  // Initialize Firebase
+				  firebase.initializeApp(firebaseConfig);
+				  firebase.analytics();
+				  // initialize fire base
+				    firebase.database().ref("user/"+JSON.parse(localStorage.getItem('userid'))+"/group").on("child_added",function(snapshot){
+            var i = "" ;
+            console.log();
+              i+= "<li data-id='"+snapshot.val().groups+"'onClick='Message(this);'>"
+              i+="<button id = 'but' 'style = height : 35px ; width : 35ppx; shape:round;'>👥</button> "
+              i+= snapshot.val().groups ;
+              i+="</li>";
+              
+
+             
+                            
+              
+              
+            
+            document.getElementById("messages").innerHTML += i ;
+            
+            
+
+
+          }); 
+				    function Message(self)
+            {      var id = self.getAttribute("data-id");
+                   localStorage.setItem('groupid', JSON.stringify(id));
+                   document.location.href = "chat.html";
+            	
+
+            }
+				    
+        
+
+        function add()
+        {
+        	document.location.href="addgroup.html";
+        }
+        function join()
+        {
+        	document.location.href="join.html"
+        }
+
+        
+</script>
+<style>
+	ul li{
+      border:0.83px solid black;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left:10px;
+      background-color: #ECE5DD;
+      height:35px;
+      font-family: "Lucida Console", "Courier New", monospace;
+      font-weight: bold;
+      font-size: 30px;
+    }
+    ul{
+      list-style-type:none ;
+    
+      
+     
+      width :600px;
+      overflow:scroll;
+      height : 600px;
+
+
+    }
+    #add
+    {
+    	margin-left: 50px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+     
+    }
+    #join
+    {
+
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    #head
+    {
+    	margin-left: 50px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color : white;
+    }
+    #hd
+    {
+    	background-color: #20B2AA;
+       opacity : 100%;
+    	padding-bottom:30px;
+
+    }
+    #bd
+    {
+    	background-image:url("https://sharegate.com/app/uploads/2019/11/howdoyouadoptteamssharepoint-thumbnail-2x-920x517.png");
+      background-size: 100%;
+    }
+	</style>
+
+
+<form onsubmit ="return sendMessage();" >
+   
+    </form>
+    <div id = "hd">
+    <h1 id = head style = margin-left:500px;>"WELCOME TO FAN PORTAL"</h1>
+    <button id = add onclick="add()">create group</button>
+    <button id = join onclick="join()">join group</button>
+     </div>
+     <body id = "bd">
+
+    <ul id = "messages"></ul>
+</body>
+    </html>
