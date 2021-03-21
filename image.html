@@ -6,6 +6,7 @@
 
 	<h1 > PLEASE SELECT THE IMAGE BY CLICKING ON SELECT BUTTON</h1>
 	<img id ="myimg" label id ="upProgress"></body><br><br>
+  <input placeholder = "Enter your message here...." type = " text " id = "namebox" >
 	<button id = 'select'>select image</button>
 	<button id = 'upload'>send image</button>
 
@@ -42,7 +43,7 @@ var currentdate = new Date();
 var datemessage = currentdate.getDate() + "-" + (currentdate.getMonth()+1) 
 + "-" + currentdate.getFullYear() + " @ " 
 + currentdate.getHours() + ":" 
-+ currentdate.getMinutes() +":" +currentdate.getSeconds();
++ currentdate.getMinutes()+":"+currentdate.getSeconds() ;
 
 var myName =JSON.parse(localStorage.getItem('userid'));
   var group = JSON.parse(localStorage.getItem('groupid'));
@@ -64,10 +65,10 @@ var myName =JSON.parse(localStorage.getItem('userid'));
        }
    document.getElementById('upload').onclick = function()
    {
-   	
+   	ImgName = document.getElementById("namebox").value;
    	var uploadTask = firebase.storage().ref("Images/"+datemessage+".png").put(files[0]);
    	uploadTask.on("state_changed",function(snapshot){
-           
+           var progress = (snapshot.bytesTranferred / snapshot.totalBytes)*100;
            
        },
 
@@ -80,10 +81,11 @@ var myName =JSON.parse(localStorage.getItem('userid'));
        {
        	uploadTask.snapshot.ref.getDownloadURL().then(function(url){
        		ImgUrl = url;
+          console.log(ImgUrl);
           
           firebase.database().ref("messages").push().set({
           "sender" : myName ,
-          "message" : " ",
+          "message" : ImgName,
           "datemessage" : datemessage,
           "group": group,
           "link": ImgUrl
